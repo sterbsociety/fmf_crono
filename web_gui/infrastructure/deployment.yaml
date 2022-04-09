@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webgui
+  namespace: fmf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webgui
+  template:
+    metadata:
+      labels:
+        app: webgui
+    spec:
+      containers:
+      - name: webgui
+        image: webgui:1.0.0
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: webgui
+   namespace: fmf
+   labels:
+      app: webgui
+   annotations: 
+spec:
+   selector:
+     app: webgui
+   ports:
+   - port: 39902
+     targetPort: 8080
+     protocol: TCP
