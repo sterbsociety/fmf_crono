@@ -11,7 +11,10 @@ cp index.html ../docker_container/
 cp -r codebase ../docker_container/
 
 cd ../docker_container
-docker build -t web_gui:1.0.0 .
+docker build -t webgui:1.0.0 .
+
+rm -rf index.html
+rm -rf codebase
 
 echo "Completed"
 exit 0
