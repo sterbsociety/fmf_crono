@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 function postgres() {
-    echo "Wroking with postgres service"
+    echo "Working with postgres service"
     build=$1
     deploy=$2
     root=$(pwd)
@@ -21,9 +21,11 @@ function postgres() {
 }
 
 function webgui() {
-    echo "Wroking with webgui service"
+    echo "Working with webgui service"
     build=$1
     deploy=$2
+    port=$3
+
     root=$(pwd)
 
     if [ "$build" -eq 1 ]; then
@@ -33,15 +35,23 @@ function webgui() {
     fi
     if [ "$deploy" -eq 1 ]; then
         echo "Deploying webgui service"
-        cd "$root/webgui/infrastructure"
+        cd "$root/web_gui/infrastructure"
         kubectl apply -f deployment.yaml
     fi
     [ "$build" -eq 1 ] && [ "$deploy" -eq 1 ] && echo "Nothing to do"
+    
+    pid=$(netstat -tulnp 2> /dev/null | grep "$port")
+    [ ! -z "$pid" ] && echo "$pid" | awk '{print $7}' | tr -d '/kubectl' | xargs kill -9 
+    sleep 5
+
+    kubectl port-forward svc/webgui-nodeport "$port:8080" --address "0.0.0.0" >> "$HOME/webgui.log" &
+    disown %1
     cd "$root"
+
 }
 
 function server() {
-    echo "Wroking with server service"
+    echo "Working with server service"
     build=$1
     deploy=$2
     root=$(pwd)
@@ -66,6 +76,8 @@ build=0
 deploy=0
 eval $(minikube -p minikube docker-env)
 
+webgui_port='32702'
+
 while true; do
     case "$1" in
         --service | -s) service="$2"; shift 2; ;;
@@ -77,7 +89,7 @@ done
 
 case "$service" in
     'postgres') postgres "$build" "$deploy"; ;;
-    'webgui') webgui "$build" "$deploy"; ;;
+    'webgui') webgui "$build" "$deploy" "$webgui_port"; ;;
     'server') server "$build" "$deploy"; ;;
     *) echo "Service $service unknown ... Exiting" && exit 1; ;;
 esac
