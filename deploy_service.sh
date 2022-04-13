@@ -36,6 +36,7 @@ function webgui() {
     if [ "$deploy" -eq 1 ]; then
         echo "Deploying webgui service"
         cd "$root/web_gui/infrastructure"
+        kubectl delete deploy webgui
         kubectl apply -f deployment.yaml
     fi
     [ "$build" -eq 1 ] && [ "$deploy" -eq 1 ] && echo "Nothing to do"
