@@ -45,8 +45,6 @@ function webgui() {
     [ ! -z "$pid" ] && echo "$pid" | awk '{print $7}' | tr -d '/kubectl' | xargs kill -9 
     sleep 5
 
-    kubectl port-forward svc/webgui-nodeport "$port:8080" --address "0.0.0.0" >> "$HOME/webgui.log" &
-    disown %1
     cd "$root"
 
 }
