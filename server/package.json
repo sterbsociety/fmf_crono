@@ -12,7 +12,7 @@
     "clean": "rm -rf node_modules build",
     "format": "prettier --write src/**/* **.json",
     "precommit": "yarn clean && yarn install  && yarn build && yarn format",
-    "start": "bash run.sh",
+    "start": "bash src/test/run.sh",
     "start-server": "nodemon --exec ts-node src/index.ts"
   },
   "devDependencies": {

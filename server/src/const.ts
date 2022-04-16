@@ -4,7 +4,7 @@ import { Client } from "pg";
 export const { PG_USER, PG_HOST, PG_PASSWORD, PG_DATABASE, PG_PORT } =
   process.env;
 
-export const logger = new Logger("info", {
+export const logger = new Logger(process.env.LOG_LEVEL as any, {
   prefix: () => new Date().toISOString(),
   leftSeparator: "→",
 });
