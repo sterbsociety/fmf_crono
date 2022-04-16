@@ -7,10 +7,10 @@ export interface requestInfo {
 }
 
 export interface queryInfo {
-    type?: QueryType
-    column?: string
-    value?: string | number | boolean
-    nullable?:  boolean
+    type?: QueryType;
+    column?: string | string[];
+    value?: string | number | boolean;
+    nullable?: boolean;
 }
 
-export type QueryType = "insert" | "update" | "delete" | "select" 
+export type QueryType = "insert" | "update" | "delete" | "select";

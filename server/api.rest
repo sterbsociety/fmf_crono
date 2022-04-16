@@ -1,9 +1,30 @@
-POST http://localhost:3000/insert HTTP/1.1
+POST http://localhost:3000/select HTTP/1.1
 content-type: application/json
 
 {
-    "type": "insert",
+    "type": "select",
     "value": "vlue",
-    "column": "column",
+    "column": "first_name",
+    "nullable": "false"
+}
+
+###
+POST http://localhost:3000/select HTTP/1.1
+content-type: application/json
+
+{
+    "type": "select",
+    "value": "vlue",
+    "column": ["id", "first_name", "last_name", "age", "mail", "address"],
+    "nullable": "false"
+}
+###
+POST http://localhost:3000/select HTTP/1.1
+content-type: application/json
+
+{
+    "type": "select",
+    "value": "vlue",
+    "column": ["last_name", "age", "address"],
     "nullable": "false"
 }
